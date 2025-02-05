@@ -1,6 +1,13 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
+import { provideStore } from '@ngrx/store';
+import { provideRouter } from '@angular/router'; 
+import { routes } from './app/app.routes';
+import { userReducer } from './app/store/reducers/user.reducer';
 
-bootstrapApplication(AppComponent, appConfig)
-  .catch((err) => console.error(err));
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideStore({ users: userReducer }),
+    provideRouter(routes) 
+  ]
+}).catch(err => console.error(err));
