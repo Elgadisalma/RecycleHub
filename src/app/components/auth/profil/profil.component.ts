@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { updateUser } from '../../../store/actions/user.actions';
+import { updateUser , deleteUser} from '../../../store/actions/user.actions';
 import { UserState } from '../../../store/reducers/user.reducer';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 
 
@@ -19,7 +20,7 @@ export class ProfilComponent {
   profilForm!: FormGroup;
   currentUser: any;
 
-  constructor(private store: Store<{ users: UserState }>, private fb: FormBuilder) {}
+  constructor(private store: Store<{ users: UserState }>, private fb: FormBuilder, private router: Router) {}
 
   ngOnInit() {
     this.store.select(state => state.users.currentUser).subscribe(user => {
@@ -52,6 +53,17 @@ export class ProfilComponent {
 
       this.store.dispatch(updateUser({ updatedUser })); 
       alert('Profil mis à jour avec succès !');
+    }
+  }
+
+
+  onDeleteAccount() {
+    if (confirm('Êtes-vous sûr de vouloir supprimer votre compte ?')) {
+      if (this.currentUser) {
+        this.store.dispatch(deleteUser({ userId: this.currentUser.id }));
+        this.router.navigate(['/register']);
+        alert('Votre compte a été supprimé avec succès.');
+      }
     }
   }
 }

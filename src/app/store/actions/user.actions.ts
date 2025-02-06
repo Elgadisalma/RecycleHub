@@ -25,4 +25,9 @@ export const updateUser = createAction(
     props<{ updatedUser: User }>()
 );
 
+
+export const deleteUser = createAction(
+    '[User] Delete User',
+    props<{ userId: string }>()
+  );
   
