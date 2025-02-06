@@ -17,5 +17,12 @@ export const initializeCollectors = createAction('[Auth] Initialize Collectors')
 export const loginUser = createAction(
     '[Auth] Login User',
     props<{ email: string; password: string }>()
-  );
+);
+
+ 
+export const updateUser = createAction(
+    '[User] Update User',
+    props<{ updatedUser: User }>()
+);
+
   

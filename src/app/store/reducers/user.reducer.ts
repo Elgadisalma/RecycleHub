@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
-import { registerUser, loadUsers, initializeCollectors, loginUser } from '../actions/user.actions';
-import { User } from '../../models/user.model';
+import { registerUser, loadUsers, initializeCollectors, loginUser, updateUser } from '../actions/user.actions';
+import { User } from './../../models/user.model';
 
 export interface UserState {
   users: User[];
@@ -58,7 +58,20 @@ export const userReducer = createReducer(
 
   on(loginUser, (state, { email, password }) => {
     const foundUser = state.users.find(u => u.email === email && u.password === password);
-    saveCurrentUserToStorage(foundUser || null);
+    saveCurrentUserToStorage(foundUser || null); 
     return { ...state, currentUser: foundUser || null };
+  }),
+  
+
+
+  on(updateUser, (state, { updatedUser }) => {
+    const updatedUsers = state.users.map(user =>
+      user.id === updatedUser.id ? { ...user, ...updatedUser } : user
+    );
+
+    saveUsersToStorage(updatedUsers);
+    saveCurrentUserToStorage(updatedUser);
+
+    return { ...state, users: updatedUsers, currentUser: updatedUser };
   })
 );
