@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { initializeCollectors } from './store/actions/user.actions';
 
 @Component({
   selector: 'app-root',
@@ -8,5 +10,7 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'recyclehub';
+  constructor(private store: Store) {
+    this.store.dispatch(initializeCollectors()); 
+  }
 }

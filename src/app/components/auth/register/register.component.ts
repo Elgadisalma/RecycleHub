@@ -44,7 +44,6 @@ export class RegisterComponent {
       ...this.registerForm.value
     };
 
-    // Ajouter l'utilisateur via NgRx Store
     this.store.dispatch(registerUser({ user: newUser }));
 
     alert('Inscription réussie !');
