@@ -26,19 +26,17 @@ export class LoginComponent {
 
   onLogin() {
     const { email, password } = this.loginForm.value;
-
+  
     this.store.select(state => state.users).pipe(take(1)).subscribe(state => {
       const user = state.users.find(u => u.email === email && u.password === password);
       
       if (user) {
-        // console.log("successfully logged in");
-        
-        this.store.dispatch(loginUser({ email, password }));
-        localStorage.setItem('currentUser', JSON.stringify(user)); 
-        this.router.navigate(['/home']); 
+        this.store.dispatch(loginUser({ email, password }));  // On ne redéfinie pas 'localStorage' ici.
+        this.router.navigate(['/home']);
       } else {
         this.errorMessage = 'Email ou mot de passe incorrect';
       }
     });
   }
+  
 }
