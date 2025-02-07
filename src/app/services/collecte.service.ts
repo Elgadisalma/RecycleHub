@@ -56,7 +56,18 @@ export class CollecteService {
     return of(this.demandes.filter(d => d.userId === userId));
   }
 
+  
   getDemandesPourCollecteur(ville: string): Observable<DemandeCollecte[]> {
-    return of(this.demandes.filter(d => d.ville === ville && d.statut === 'en_attente'));
+    const demandesFiltrees = this.demandes.filter(demande => demande.ville === ville);
+    return of(demandesFiltrees);
+  }
+
+  changerStatutDemande(id: string, statut: 'occupée' | 'en_cours' | 'validée' | 'rejetée'): Observable<string> {
+    const demande = this.demandes.find(d => d.id === id);
+    if (demande) {
+      demande.statut = statut;
+      return of('Statut de la demande mis à jour');
+    }
+    return of('Demande non trouvée');
   }
 }
