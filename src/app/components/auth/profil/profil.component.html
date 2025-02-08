@@ -1,48 +1,96 @@
 <div class="max-w-lg mx-auto bg-white shadow-lg rounded-xl p-6">
-    <h2 class="text-2xl font-bold text-center mb-6">Mon Profil</h2>
-  
-    <form [formGroup]="profilForm" (ngSubmit)="onSave()" class="space-y-4">
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Prénom :</label>
-        <input type="text" formControlName="firstName" class="input-field" />
-      </div>
-  
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Nom :</label>
-        <input type="text" formControlName="lastName" class="input-field" />
-      </div>
-  
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Email :</label>
-        <input type="text" formControlName="email" [attr.disabled]="'disabled'" class="input-field bg-gray-200 cursor-not-allowed" />
-      </div>
-  
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Adresse :</label>
-        <input type="text" formControlName="address" class="input-field" />
-      </div>
-  
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Téléphone :</label>
-        <input type="text" formControlName="phone" class="input-field" />
-      </div>
-  
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Date de naissance :</label>
-        <input type="date" formControlName="birthDate" class="input-field" />
-      </div>
-  
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Rôle :</label>
-        <input type="text" formControlName="role" [attr.disabled]="'disabled'" class="input-field bg-gray-200 cursor-not-allowed" />
-      </div>
-  
-      <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
-        Mettre à jour
-      </button>
-    </form>
+  <h2 class="text-2xl font-bold text-center mb-6">Mon Profil</h2>
 
-    <button (click)="onDeleteAccount()" class="delete-account-btn">Supprimer le compte</button>
 
-  </div>
-  
+  <form [formGroup]="profilForm" (ngSubmit)="onSave()" class="space-y-4">
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Prénom :</label>
+      <input type="text" formControlName="firstName" class="input-field" />
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Nom :</label>
+      <input type="text" formControlName="lastName" class="input-field" />
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Email :</label>
+      <input type="text" formControlName="email" [attr.disabled]="'disabled'" class="input-field bg-gray-200 cursor-not-allowed" />
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Adresse :</label>
+      <input type="text" formControlName="address" class="input-field" />
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Téléphone :</label>
+      <input type="text" formControlName="phone" class="input-field" />
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Date de naissance :</label>
+      <input type="date" formControlName="birthDate" class="input-field" />
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Rôle :</label>
+      <input type="text" formControlName="role" [attr.disabled]="'disabled'" class="input-field bg-gray-200 cursor-not-allowed" />
+    </div>
+
+    <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+      Mettre à jour
+    </button>
+  </form>
+
+  <button (click)="onDeleteAccount()" class="delete-account-btn">Supprimer le compte</button>
+</div>
+
+
+<div class="mt-8 max-w-lg mx-auto">
+  <h3 class="text-2xl font-bold text-center mb-6">Mes Demandes</h3>
+  <ul class="space-y-4">
+    <li *ngFor="let demande of clientDemandes" class="p-4 bg-blue-50 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+      <div class="flex flex-col space-y-3">
+        <h4 class="text-xl font-medium text-green-600">{{ demande.typeDechets.join(', ') }}</h4>
+        
+
+        <div *ngIf="demande.statut === 'en_attente'">
+            <form [formGroup]="demandesForms[demande.id]" (ngSubmit)="onSaveDemande(demande)">
+                <div>
+              <label class="block text-sm font-medium text-gray-700">Poids :</label>
+              <input type="number" formControlName="poids" class="input-field" />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Adresse :</label>
+              <input type="text" formControlName="adresse" class="input-field" />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Ville :</label>
+              <input type="text" formControlName="ville" class="input-field" />
+            </div>
+
+            <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition">
+              Enregistrer
+            </button>
+          </form>
+        </div>
+
+
+        <div *ngIf="demande.statut !== 'en_attente'">
+          <p class="text-sm text-gray-700">Poids: {{ demande.poids }} kg</p>
+          <p class="text-sm text-gray-700">Adresse: {{ demande.adresse }}</p>
+          <p class="text-sm text-gray-700">Ville: {{ demande.ville }}</p>
+        </div>
+
+        <div class="flex space-x-3">
+          <button *ngIf="demande.statut === 'en_attente'" (click)="onDeleteDemande(demande.id)" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
+            Supprimer
+          </button>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

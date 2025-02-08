@@ -1,33 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { updateUser , deleteUser} from '../../../store/actions/user.actions';
+import { FormBuilder, FormGroup , ReactiveFormsModule } from '@angular/forms';
+import { updateUser, deleteUser } from '../../../store/actions/user.actions';
 import { UserState } from '../../../store/reducers/user.reducer';
-import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-
-
+import { CollecteService } from '../../../services/collecte.service'; 
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-profil',
   templateUrl: './profil.component.html',
   styleUrls: ['./profil.component.css'],
-  imports: [ReactiveFormsModule, CommonModule],
-
+  imports: [ReactiveFormsModule, CommonModule]
 })
 
-export class ProfilComponent {
+export class ProfilComponent implements OnInit {
   profilForm!: FormGroup;
+  demandesForms: { [key: string]: FormGroup } = {};
   currentUser: any;
+  clientDemandes: any[] = [];
 
-  constructor(private store: Store<{ users: UserState }>, private fb: FormBuilder, private router: Router) {}
+  constructor(
+    private store: Store<{ users: UserState }>,
+    private fb: FormBuilder,
+    private router: Router,
+    private collecteService: CollecteService
+  ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+
     this.store.select(state => state.users.currentUser).subscribe(user => {
       this.currentUser = user;
 
       if (user) {
-        // console.log(user); 
 
         this.profilForm = this.fb.group({
           firstName: [user.firstName],
@@ -38,32 +43,76 @@ export class ProfilComponent {
           birthDate: [user.birthDate],
           role: [{ value: user.role, disabled: true }]
         });
-      } else {
-        // console.log('eerror');
+
+
+        this.collecteService.getDemandesUtilisateur(user.id).subscribe(demandes => {
+          this.clientDemandes = demandes;
+        });this.collecteService.getDemandesUtilisateur(user.id).subscribe(demandes => {
+          this.clientDemandes = demandes;
+        
+
+          this.clientDemandes.forEach(demande => {
+            this.demandesForms[demande.id] = this.fb.group({
+              poids: [demande.poids],
+              adresse: [demande.adresse],
+              ville: [demande.ville]
+            });
+          });
+        });        
       }
     });
   }
 
-  onSave() {
+  onSave(): void {
     if (this.profilForm.valid) {
       const updatedUser = {
         ...this.currentUser,
-        ...this.profilForm.getRawValue() 
+        ...this.profilForm.getRawValue()
       };
-
-      this.store.dispatch(updateUser({ updatedUser })); 
+      this.store.dispatch(updateUser({ updatedUser }));
       alert('Profil mis à jour avec succès !');
     }
   }
 
-
-  onDeleteAccount() {
+  onDeleteAccount(): void {
     if (confirm('Êtes-vous sûr de vouloir supprimer votre compte ?')) {
       if (this.currentUser) {
         this.store.dispatch(deleteUser({ userId: this.currentUser.id }));
         this.router.navigate(['/register']);
         alert('Votre compte a été supprimé avec succès.');
       }
+    }
+  }
+
+  createDemandeForm(demande: any): FormGroup {
+    return this.fb.group({
+      poids: [demande.poids],
+      adresse: [demande.adresse],
+      ville: [demande.ville]
+    });
+  }
+
+  onSaveDemande(demande: any): void {
+    const form = this.demandesForms[demande.id];
+  
+    if (form.valid) {
+      const updatedDemande = {
+        ...demande,
+        ...form.value
+      };
+      this.collecteService.modifierDemande(updatedDemande).subscribe(message => {
+        alert(message);
+      });
+    }
+  }
+  
+
+  onDeleteDemande(demandeId: string): void {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette demande ?')) {
+      this.collecteService.supprimerDemande(demandeId).subscribe(message => {
+        this.clientDemandes = this.clientDemandes.filter(d => d.id !== demandeId);
+        alert(message);
+      });
     }
   }
 }
