@@ -1,41 +1,49 @@
 <div class="m-16" *ngIf="demandesEnAttente && demandesEnAttente.length > 0">
-    <h2 class="text-3xl font-semibold text-center mb-8 text-indigo-500">Demandes en Attente pour votre Ville</h2>
-    
-    <ul class="space-y-6 m-10">
-      <li *ngFor="let demande of demandesEnAttente" class="p-6 bg-blue-50 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-        <div class="flex justify-between items-start">
-          <div class="flex flex-col space-y-2">
-            <h3 class="text-lg font-medium text-green-600">{{ demande.typeDechets.join(', ') }}</h3>
-            
-            <div class="flex space-x-2">
-              <span class="font-semibold text-gray-600">Poids :</span>
-              <span class="text-gray-700">{{ demande.poids }} kg</span>
-            </div>
-            
-            <div class="flex space-x-2">
-              <span class="font-semibold text-gray-600">Adresse :</span>
-              <span class="text-gray-700">{{ demande.adresse }}</span>
-            </div>
-  
-            <div class="flex space-x-2">
-              <span class="font-semibold text-gray-600">Ville :</span>
-              <span class="text-gray-700">{{ demande.ville }}</span>
-            </div>
+  <h2 class="text-3xl font-semibold text-center mb-8 text-indigo-500">
+      Demandes en Attente pour votre Ville
+  </h2>
+
+  <ul class="space-y-6 m-10">
+    <li *ngFor="let demande of demandesEnAttente" class="p-6 bg-blue-50 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+      <div class="flex justify-between items-start">
+        <div class="flex flex-col space-y-2">
+          <h3 class="text-lg font-medium text-green-600">{{ demande.typeDechets.join(', ') }}</h3>
+          
+          <div class="flex space-x-2">
+            <span class="font-semibold text-gray-600">Poids :</span>
+            <span class="text-gray-700">{{ demande.poids }} kg</span>
           </div>
-  
-          <div>
-            <button 
-              *ngIf="demande.statut === 'en_attente'" 
-              class="mt-4 inline-block px-5 py-2 bg-green-300 text-white rounded-lg shadow-sm hover:bg-green-400 transition-all duration-200">
-              Accepter la demande
-            </button>
+          
+          <div class="flex space-x-2">
+            <span class="font-semibold text-gray-600">Adresse :</span>
+            <span class="text-gray-700">{{ demande.adresse }}</span>
+          </div>
+
+          <div class="flex space-x-2">
+            <span class="font-semibold text-gray-600">Ville :</span>
+            <span class="text-gray-700">{{ demande.ville }}</span>
+          </div>
+
+          <div class="mt-2">
+            <label class="font-semibold text-gray-600">Statut :</label>
+            <select [(ngModel)]="demande.statut" (change)="onStatutChange(demande, getSelectValue($event))">
+              <option value="en_attente">En attente</option>
+              <option value="occupée">Occupée</option>
+              <option value="en_cours">En cours</option>
+              <option value="validée">Validée</option>
+              <option value="rejetée">Rejetée</option>
+            </select>
+            
+            
           </div>
         </div>
-      </li>
-    </ul>
-  </div>
-  
-  <div *ngIf="demandesEnAttente.length === 0">
-    <p class="text-lg font-semibold text-center text-gray-500 mt-8">Aucune demande en attente dans votre ville.</p>
-  </div>
-  
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="demandesEnAttente.length === 0">
+  <p class="text-lg font-semibold text-center text-gray-500 mt-8">
+      Aucune demande en attente dans votre ville.
+  </p>
+</div>

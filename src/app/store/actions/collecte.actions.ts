@@ -18,5 +18,5 @@ export const updateDemande = createAction(
 
 export const changerStatutDemande = createAction(
   '[Demande] Changer Statut',
-  props<{ id: string; statut: 'occupée' | 'en_cours' | 'validée' | 'rejetée' }>()
+  props<{ id: string; statut: 'en_attente' | 'occupée' | 'en_cours' | 'validée' | 'rejetée' }>()
 );
