@@ -1,3 +1,23 @@
+<div class="max-w-lg mx-auto bg-white shadow-lg rounded-xl p-6 mt-8">
+  <h3 class="text-2xl font-bold text-center mb-6">Mes Points</h3>
+  
+  <div class="text-center mb-4">
+    <p class="text-lg">Points actuels : <strong>{{ currentUser?.points }}</strong></p>
+  </div>
+
+  <!-- Bouton de bénéficiaire -->
+  <div class="flex justify-center">
+    <button (click)="beneficierBon()" class="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700">
+      Bénéficier d'un bon d'achat
+    </button>
+  </div>
+
+  <!-- Affichage d'un message si points insuffisants -->
+  <div *ngIf="message" class="mt-4 text-center text-red-600">
+    <p>{{ message }}</p>
+  </div>
+</div>
+
 <div class="max-w-lg mx-auto bg-white shadow-lg rounded-xl p-6">
   <h2 class="text-2xl font-bold text-center mb-6">Mon Profil</h2>
 
@@ -38,10 +58,6 @@
       <input type="text" formControlName="role" [attr.disabled]="'disabled'" class="input-field bg-gray-200 cursor-not-allowed" />
     </div>
 
-    <div>
-      <label class="block text-sm font-medium text-gray-700">Points :</label>
-      <input type="text" formControlName="points" [attr.disabled]="'disabled'" class="input-field bg-gray-200 cursor-not-allowed" />
-    </div>
 
     <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
       Mettre à jour

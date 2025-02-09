@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { calculerPoints, attribuerPoints } from '../store/actions/collecte.actions';
+import { updateUser } from '../store/actions/user.actions';
 import { User } from '../models/user.model';
 
 @Injectable({
@@ -36,11 +37,13 @@ export class PointService {
 
   attribuerPointsClient(clientId: string, points: number) {
     let clients: User[] = JSON.parse(localStorage.getItem('users') || '[]');  
-  
+    
     const clientIndex = clients.findIndex((c: User) => c.id === clientId);
   
     if (clientIndex !== -1) {
-      clients[clientIndex].points = (clients[clientIndex].points || 0) + points;
+      const currentPoints = Number(clients[clientIndex].points) || 0;
+      clients[clientIndex].points = currentPoints + points;
+      
       localStorage.setItem('users', JSON.stringify(clients));  
   
       this.store.dispatch(attribuerPoints({ clientId, points }));
@@ -48,4 +51,5 @@ export class PointService {
       console.log('Client non trouvé dans le localStorage');
     }
   }
+  
 }
