@@ -41,7 +41,8 @@ export class ProfilComponent implements OnInit {
           address: [user.address],
           phone: [user.phone],
           birthDate: [user.birthDate],
-          role: [{ value: user.role, disabled: true }]
+          role: [{ value: user.role, disabled: true }],
+          points: [{ value: user.points, disabled: true }]
         });
 
 
