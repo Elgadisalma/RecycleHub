@@ -62,12 +62,20 @@ export class CollecteService {
     return of(demandesFiltrees);
   }
 
-  changerStatutDemande(id: string, statut: 'occupée' | 'en_cours' | 'validée' | 'rejetée'): Observable<string> {
-    const demande = this.demandes.find(d => d.id === id);
-    if (demande) {
-      demande.statut = statut;
-      return of('Statut de la demande mis à jour');
+  changerStatutDemande(id: string, statut: 'en_attente' | 'occupée' | 'en_cours' | 'validée' | 'rejetée'): Observable<string> {
+    const demandeIndex = this.demandes.findIndex(d => d.id === id);
+    
+    if (demandeIndex !== -1) {
+      this.demandes[demandeIndex].statut = statut;
+  
+      localStorage.setItem('demandes', JSON.stringify(this.demandes));
+  
+      this.store.dispatch(updateDemande({ demande: this.demandes[demandeIndex] }));
+  
+      return of('Statut de la demande mis à jour avec succès.');
     }
-    return of('Demande non trouvée');
+    return of('Demande non trouvée.');
   }
+  
+  
 }
