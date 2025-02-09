@@ -5,6 +5,7 @@ import { updateUser, deleteUser } from '../../../store/actions/user.actions';
 import { UserState } from '../../../store/reducers/user.reducer';
 import { Router } from '@angular/router';
 import { CollecteService } from '../../../services/collecte.service'; 
+import { PointService } from '../../../services/point.service'; 
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -19,12 +20,14 @@ export class ProfilComponent implements OnInit {
   demandesForms: { [key: string]: FormGroup } = {};
   currentUser: any;
   clientDemandes: any[] = [];
+  message: string = '';
 
   constructor(
     private store: Store<{ users: UserState }>,
     private fb: FormBuilder,
     private router: Router,
-    private collecteService: CollecteService
+    private collecteService: CollecteService,
+    private pointService: PointService
   ) {}
 
   ngOnInit(): void {
@@ -63,6 +66,43 @@ export class ProfilComponent implements OnInit {
       }
     });
   }
+
+  beneficierBon(): void {
+    if (!this.currentUser) {
+      this.message = 'Utilisateur non trouvé';
+      return;
+    }
+  
+    let points = this.currentUser.points;
+    let pointsToDeduct = 0;
+    let voucherAmount = 0;
+  
+    if (points >= 500) {
+      pointsToDeduct = 500; 
+      voucherAmount = 350;
+    } else if (points >= 200) {
+      pointsToDeduct = 200; 
+      voucherAmount = 120;
+    } else if (points >= 100) {
+      pointsToDeduct = 100; 
+      voucherAmount = 50;
+    } else {
+      this.message = 'Désolé, vous n\'avez pas assez de points pour bénéficier d\'un bon d\'achat.';
+      return;
+    }
+  
+    const updatedUser = {
+      ...this.currentUser,
+      points: this.currentUser.points - pointsToDeduct 
+    };
+  
+    this.store.dispatch(updateUser({ updatedUser }));
+    
+    this.pointService.attribuerPointsClient(this.currentUser.id, -pointsToDeduct);
+  
+    this.message = `Félicitations ! Vous avez reçu un bon d\'achat de ${voucherAmount} Dh.`;
+  }
+  
 
   onSave(): void {
     if (this.profilForm.valid) {

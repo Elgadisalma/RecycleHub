@@ -15,7 +15,7 @@ const saveCurrentUserToStorage = (user: User | null) => localStorage.setItem('cu
 
 // Collecteur
 const defaultCollectors: User[] = [
-  { id: crypto.randomUUID(), email: 'collector1@example.com', password: 'password123', firstName: 'Collector', lastName: 'One', address: 'Marrakech', phone: '0612345678', birthDate: '1990-01-01', role: 'collecteur', points:0 },
+  { id: crypto.randomUUID(), email: 'collector1@example.com', password: 'password123', firstName: 'Collector', lastName: 'One', address: 'Marrakech', phone: '0612345678', birthDate: '1990-01-01', role: 'collecteur', points:1000 },
   { id: crypto.randomUUID(), email: 'collector2@example.com', password: 'password123', firstName: 'Collector', lastName: 'Two', address: 'Casablanca', phone: '0623456789', birthDate: '1985-05-10', role: 'collecteur', points:0 },
   { id: crypto.randomUUID(), email: 'collector3@example.com', password: 'password123', firstName: 'Collector', lastName: 'Three', address: 'Safi', phone: '0634567890', birthDate: '1992-07-20', role: 'collecteur', points:0 }
 ];
