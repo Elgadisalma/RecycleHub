@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CollecteService } from '../../../services/collecte.service';
+import { PointService } from '../../../services/point.service';  // ✅ Import du service de points
 import { Store } from '@ngrx/store';
 import { UserState } from '../../../store/reducers/user.reducer';
 import { CommonModule } from '@angular/common';
@@ -21,6 +22,7 @@ export class ListeComponent {
 
   constructor(
     private collecteService: CollecteService,
+    private pointService: PointService,  // ✅ Injection du PointService
     private store: Store<{ users: UserState }>
   ) {}
 
@@ -29,7 +31,7 @@ export class ListeComponent {
       this.currentUser = user;
       if (user) {
         this.villeCollecteur = user.address;
-        this.chargerDemandesPourCollecteur();
+        this.chargerDemandesPourCollecteur(); 
       }
     });
   }
@@ -48,18 +50,24 @@ export class ListeComponent {
 
   onStatutChange(demande: DemandeCollecte, newStatut: string) {
     const statutValide = newStatut as DemandeCollecte['statut'];
-
+  
+    const demandeModifiee = { ...demande, statut: statutValide };
+  
     this.collecteService.changerStatutDemande(demande.id, statutValide).subscribe((message) => {
       alert(message);
-
+  
       const index = this.demandesEnAttente.findIndex(d => d.id === demande.id);
       if (index !== -1) {
-        this.demandesEnAttente[index].statut = statutValide;
+        this.demandesEnAttente[index] = demandeModifiee;
       }
-
+  
+      if (statutValide === 'validée') {
+        const points = this.pointService.calculerPoints(demande.typeDechets, demande.poids);
+        this.pointService.attribuerPointsClient(demande.userId, points);
+      }
+  
       localStorage.setItem('demandes', JSON.stringify(this.demandesEnAttente));
-
-      this.chargerDemandesPourCollecteur();
+      this.chargerDemandesPourCollecteur();  
     });
   }
 }

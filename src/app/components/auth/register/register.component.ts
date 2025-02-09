@@ -30,7 +30,8 @@ export class RegisterComponent {
       address: ['', Validators.required],
       phone: ['', [Validators.required]],
       birthDate: ['', Validators.required],
-      role: ['particulier']
+      role: ['particulier'],
+      points: [0]
     });
   }
 
