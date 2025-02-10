@@ -7,12 +7,14 @@ import { Router } from '@angular/router';
 import { CollecteService } from '../../../services/collecte.service'; 
 import { PointService } from '../../../services/point.service'; 
 import { CommonModule } from '@angular/common';
+import { NavbarComponent } from '../../../components/navbar/navbar.component';
+
 
 @Component({
   selector: 'app-profil',
   templateUrl: './profil.component.html',
   styleUrls: ['./profil.component.css'],
-  imports: [ReactiveFormsModule, CommonModule]
+  imports: [ReactiveFormsModule, CommonModule, NavbarComponent]
 })
 
 export class ProfilComponent implements OnInit {

@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { CollecteService } from '../../../services/collecte.service';
-import { PointService } from '../../../services/point.service';  // ✅ Import du service de points
+import { PointService } from '../../../services/point.service';  
 import { Store } from '@ngrx/store';
 import { UserState } from '../../../store/reducers/user.reducer';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
 import { DemandeCollecte } from '../../../models/demande-collecte.model';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-liste',
@@ -22,7 +23,8 @@ export class ListeComponent {
 
   constructor(
     private collecteService: CollecteService,
-    private pointService: PointService,  // ✅ Injection du PointService
+    private pointService: PointService, 
+    private authService: AuthService,
     private store: Store<{ users: UserState }>
   ) {}
 
@@ -69,5 +71,11 @@ export class ListeComponent {
       localStorage.setItem('demandes', JSON.stringify(this.demandesEnAttente));
       this.chargerDemandesPourCollecteur();  
     });
+  }
+
+  onLogout() {
+    console.log("logout on component");
+    
+    this.authService.logout();
   }
 }
