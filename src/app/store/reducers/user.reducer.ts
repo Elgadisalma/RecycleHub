@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { registerUser, loadUsers, initializeCollectors, loginUser, updateUser, deleteUser } from '../actions/user.actions';
+import { registerUser, loadUsers, initializeCollectors, loginUser, updateUser, deleteUser , logoutUser} from '../actions/user.actions';
 import { User } from './../../models/user.model';
 
 export interface UserState {
@@ -85,5 +85,10 @@ export const userReducer = createReducer(
     saveCurrentUserToStorage(currentUser);
 
     return { ...state, users: updatedUsers, currentUser };
-  })
+  }),
+
+  on(logoutUser, (state) => ({
+    ...state,
+    currentUser: null
+  }))
 );

@@ -31,3 +31,6 @@ export const deleteUser = createAction(
     props<{ userId: string }>()
   );
   
+
+export const logoutUser = createAction('[User] Logout');
+
