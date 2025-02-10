@@ -31,8 +31,12 @@ export class LoginComponent {
       const user = state.users.find(u => u.email === email && u.password === password);
       
       if (user) {
-        this.store.dispatch(loginUser({ email, password }));  // On ne redéfinie pas 'localStorage' ici.
-        this.router.navigate(['/home']);
+        this.store.dispatch(loginUser({ email, password })); 
+        if (user.role === 'collecteur') {
+          this.router.navigate(['/list']);
+        } else {
+          this.router.navigate(['/home']);
+        }
       } else {
         this.errorMessage = 'Email ou mot de passe incorrect';
       }
