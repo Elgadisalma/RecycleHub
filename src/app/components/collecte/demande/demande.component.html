@@ -1,90 +1,98 @@
 <app-navbar></app-navbar>
 
-<div class="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg">
-    <h2 class="text-2xl font-semibold text-center mb-6 text-gray-800">Faire une Demande de Collecte</h2>
-  
-    <form [formGroup]="demandeForm" (ngSubmit)="ajouterDemande()" class="space-y-4">
-      
+<!-- Conteneur principal avec fond vert -->
+<div class="min-h-screen bg-green-600 flex items-center justify-center p-6">
+
+  <!-- Carte contenant le formulaire -->
+  <div class="w-full max-w-2xl bg-white shadow-xl rounded-2xl p-8">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">🗑️ Faire une Demande de Collecte</h2>
+
+    <form [formGroup]="demandeForm" (ngSubmit)="ajouterDemande()" class="space-y-5">
+
+      <!-- Types de Déchets -->
       <div>
-        <label class="block font-medium text-gray-700">Types de Déchets :</label>
+        <label class="block font-semibold text-gray-700">Types de Déchets :</label>
         <select multiple formControlName="typeDechets" required
-          class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-green-300">
+          class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400">
           <option value="Plastique">Plastique</option>
           <option value="Verre">Verre</option>
           <option value="Papier">Papier</option>
           <option value="Métal">Métal</option>
         </select>
-        <div *ngIf="demandeForm.get('typeDechets')?.invalid && demandeForm.get('typeDechets')?.touched" class="text-red-500 text-sm">
-          Veuillez sélectionner au moins un type de déchet.
-        </div>
+        <p *ngIf="demandeForm.get('typeDechets')?.invalid && demandeForm.get('typeDechets')?.touched"
+          class="text-red-500 text-sm mt-1">Veuillez sélectionner au moins un type de déchet.</p>
       </div>
-  
+
+      <!-- Poids -->
       <div>
-        <label class="block font-medium text-gray-700">Poids (kg) :</label>
+        <label class="block font-semibold text-gray-700">Poids (kg) :</label>
         <input type="number" formControlName="poids" min="1" max="10" required
-          class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-green-300" />
-        <div *ngIf="demandeForm.get('poids')?.invalid && demandeForm.get('poids')?.touched" class="text-red-500 text-sm">
-          <div *ngIf="demandeForm.get('poids')?.hasError('required')">Le poids est requis.</div>
-          <div *ngIf="demandeForm.get('poids')?.hasError('min')">Le poids ne peut pas être inférieur à 1 kg.</div>
-          <div *ngIf="demandeForm.get('poids')?.hasError('max')">Le poids ne peut pas dépasser 10 kg.</div>
-        </div>
+          class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400" />
+        <p *ngIf="demandeForm.get('poids')?.invalid && demandeForm.get('poids')?.touched"
+          class="text-red-500 text-sm mt-1">
+          <span *ngIf="demandeForm.get('poids')?.hasError('required')">Le poids est requis.</span>
+          <span *ngIf="demandeForm.get('poids')?.hasError('min')">Minimum 1 kg.</span>
+          <span *ngIf="demandeForm.get('poids')?.hasError('max')">Maximum 10 kg.</span>
+        </p>
       </div>
-  
+
+      <!-- Adresse -->
       <div>
-        <label class="block font-medium text-gray-700">Adresse :</label>
+        <label class="block font-semibold text-gray-700">Adresse :</label>
         <input type="text" formControlName="adresse" required
-          class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-green-300" />
-        <div *ngIf="demandeForm.get('adresse')?.invalid && demandeForm.get('adresse')?.touched" class="text-red-500 text-sm">
-          L'adresse est requise.
-        </div>
+          class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400" />
+        <p *ngIf="demandeForm.get('adresse')?.invalid && demandeForm.get('adresse')?.touched"
+          class="text-red-500 text-sm mt-1">L'adresse est requise.</p>
       </div>
-  
+
+      <!-- Ville -->
       <div>
-        <label class="block font-medium text-gray-700">Ville :</label>
+        <label class="block font-semibold text-gray-700">Ville :</label>
         <input type="text" formControlName="ville" required
-          class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-green-300" />
-        <div *ngIf="demandeForm.get('ville')?.invalid && demandeForm.get('ville')?.touched" class="text-red-500 text-sm">
-          La ville est requise.
-        </div>
+          class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400" />
+        <p *ngIf="demandeForm.get('ville')?.invalid && demandeForm.get('ville')?.touched"
+          class="text-red-500 text-sm mt-1">La ville est requise.</p>
       </div>
-  
+
+      <!-- Date souhaitée -->
       <div>
-        <label class="block font-medium text-gray-700">Date souhaitée :</label>
+        <label class="block font-semibold text-gray-700">Date souhaitée :</label>
         <input type="date" formControlName="dateSouhaitee" required
-          class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-green-300" />
-        <div *ngIf="demandeForm.get('dateSouhaitee')?.invalid && demandeForm.get('dateSouhaitee')?.touched" class="text-red-500 text-sm">
-          La date souhaitée est requise.
-        </div>
+          class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400" />
+        <p *ngIf="demandeForm.get('dateSouhaitee')?.invalid && demandeForm.get('dateSouhaitee')?.touched"
+          class="text-red-500 text-sm mt-1">La date souhaitée est requise.</p>
       </div>
-  
+
+      <!-- Heure souhaitée -->
       <div>
-        <label class="block font-medium text-gray-700">Heure souhaitée :</label>
+        <label class="block font-semibold text-gray-700">Heure souhaitée :</label>
         <input type="time" formControlName="heureSouhaitee" required
-          class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-green-300" />
-        <div *ngIf="demandeForm.get('heureSouhaitee')?.invalid && demandeForm.get('heureSouhaitee')?.touched" class="text-red-500 text-sm">
-          <div *ngIf="demandeForm.get('heureSouhaitee')?.hasError('required')">L'heure souhaitée est requise.</div>
-          <div *ngIf="demandeForm.get('heureSouhaitee')?.hasError('invalidHeure')">L'heure doit être comprise entre 09h00 et 18h00.</div>
-        </div>
+          class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400" />
+        <p *ngIf="demandeForm.get('heureSouhaitee')?.invalid && demandeForm.get('heureSouhaitee')?.touched"
+          class="text-red-500 text-sm mt-1">L'heure est requise (entre 09h00 et 18h00).</p>
       </div>
-  
+
+      <!-- Photo des déchets -->
       <div>
-        <label class="block font-medium text-gray-700">Photo des déchets (optionnel) :</label>
+        <label class="block font-semibold text-gray-700">Photo des déchets (optionnel) :</label>
         <input type="file" (change)="onFileSelected($event)"
-          class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-green-300" />
+          class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400" />
       </div>
-  
+
+      <!-- Notes -->
       <div>
-        <label class="block font-medium text-gray-700">Notes (optionnel) :</label>
+        <label class="block font-semibold text-gray-700">Notes (optionnel) :</label>
         <textarea formControlName="notes"
-          class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-green-300"></textarea>
+          class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400"></textarea>
       </div>
-  
+
+      <!-- Bouton d'envoi -->
       <button type="submit" [disabled]="demandeForm.invalid"
-        class="w-full p-2 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 disabled:bg-gray-300">
-        Envoyer la Demande
+        class="w-full p-3 bg-green-500 text-white font-bold text-lg rounded-lg hover:bg-green-700 transition-all duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed">
+        ✅ Envoyer la Demande
       </button>
+
     </form>
-  
-    <hr class="my-6 border-gray-300" />
+
   </div>
-  
+</div>
