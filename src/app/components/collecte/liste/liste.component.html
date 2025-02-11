@@ -1,3 +1,11 @@
+<nav class="bg-gray-800 p-4 shadow-md">
+  <div class="max-w-6xl mx-auto flex items-center">
+      <button (click)="onLogout()" class="text-white text-lg font-semibold hover:text-gray-300 ml-auto">
+          Déconnexion
+      </button>
+  </div>
+</nav>
+
 <div class="m-16" *ngIf="demandesEnAttente && demandesEnAttente.length > 0">
   <h2 class="text-3xl font-semibold text-center mb-8 text-indigo-500">
       Demandes en Attente pour votre Ville

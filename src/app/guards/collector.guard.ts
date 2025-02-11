@@ -14,7 +14,7 @@ export const collectorGuard: CanActivateFn = () => {
       if (user && user.role === 'collecteur') {
         return true;
       } else {
-        router.navigate(['/list']);
+        router.navigate(['/home']);
         return false;
       }
     })

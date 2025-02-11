@@ -5,12 +5,14 @@ import { DemandeCollecte } from '../../../models/demande-collecte.model';
 import { Store } from '@ngrx/store';
 import { UserState } from '../../../store/reducers/user.reducer';
 import { CommonModule } from '@angular/common';
+import { NavbarComponent } from '../../../components/navbar/navbar.component';
+
 
 
 @Component({
   selector: 'app-demande',
   standalone: true, 
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, NavbarComponent],
   templateUrl: './demande.component.html',
   styleUrls: ['./demande.component.css']
 })
